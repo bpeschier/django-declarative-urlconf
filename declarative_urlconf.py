@@ -2,6 +2,7 @@ from collections import OrderedDict
 import copy
 
 from django.conf import urls
+from django.core.urlresolvers import reverse
 from django.views.generic.base import View
 
 
@@ -42,12 +43,16 @@ class URL:
         return urls_namespace if urls_namespace else self.namespace
 
     @property
-    def reverse_name(self):
+    def url_name(self):
         namespace = self.get_namespace()
         if namespace is None:
             return self.name
         else:
             return '{ns}:{name}'.format(ns=namespace, name=self.get_view_name())
+
+    @property
+    def url(self):
+        return reverse(self.url_name)
 
 
 class URLsMeta(type):
